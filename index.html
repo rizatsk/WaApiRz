@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whatsapp API By Rz</title>
+</head>
+<body>
+    <div>
+        <h1>Whatsapp</h1>
+        <p>Powered By Rizat</p>
+        <img src="" alt="QR Code" id="qrCode">
+        <h3>Logs</h3>
+        <ul class="logs"></ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.1/socket.io.min.js" integrity="sha512-mHO4BJ0ELk7Pb1AzhTi3zvUeRgq3RXVOu9tTRfnA6qOxGK4pG2u57DJYolI4KrEnnLTcH9/J5wNOozRTDaybXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(() => {
+            const socket = io.connect(('http:localhost:3000', {path: '/socket.io'}));
+
+            socket.on('message', (data) => {
+                $('.logs').append($('<li>').text(data));
+            })
+
+            socket.on('qr', (url) => {
+                $("#qrCode").attr("src", url);
+            })
+
+            socket.on('ready', (src) => {
+                $('#qrCode').hide();
+            })
+
+            socket.on('authenticated', (src) => {
+                $('#qrCode').hide();
+            })
+
+            socket.on('logout', (src) => {
+                location.reload();
+            })
+        })
+    </script>
+</body>
+</html>
